@@ -1,7 +1,0 @@
-== 1.0.1 / 2006-10-24
-
-* Made Paginator#page more accepting, and set it to default to 1
-
-== 1.0.0 / 2006-10-23
-
-* Initial release
