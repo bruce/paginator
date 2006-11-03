@@ -2,7 +2,7 @@ require 'forwardable'
 
 class Paginator
   
-  VERSION = '1.0.1'
+  VERSION = '1.0.5'
 
   class ArgumentError < ::ArgumentError; end
   class MissingCountError < ArgumentError; end
@@ -18,7 +18,7 @@ class Paginator
   # * A block that returns the array of items
   #   * The block is passed the item offset 
   #     (and the number of items to show per page, for
-  #     convenience)
+  #     convenience, if the arity is 2)
   def initialize(count, per_page, &select)
     @count, @per_page = count, per_page
     unless select
@@ -52,7 +52,12 @@ class Paginator
   # Retrieve page object by number
   def page(number)
     number = (n = number.to_i) > 0 ? n : 1
-    Page.new(self, number, lambda{ @select.call((number - 1) * @per_page, @per_page) })
+    Page.new(self, number, lambda { 
+      offset = (number - 1) * @per_page
+      args = [offset]
+      args << @per_page if @select.arity == 2
+      @select.call(*args)
+    })
   end
   
   # Page object

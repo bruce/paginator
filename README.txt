@@ -15,14 +15,19 @@ set of objects based on the offset and number of objects per page.
 
 == SYNOPSIS:
 
+In both of these examples I'm using a PER_PAGE constant (the number of items per page), but it's merely for labeling purposes.
+
+You could, of course, just pass in the number of items per page directly to the initializer without assigning it somewhere beforehand.
+
 === In a Rails Application
 
-  # In your controller
-  PER_PAGE = 20
-  @pager = Paginator.new(Foo.count, PER_PAGE) do |offset, per_page|
-    Foo.find(:all, :limit => per_page, :offset => offset)
+  def index
+	  @pager = ::Paginator.new(Foo.count, PER_PAGE) do |offset, per_page|
+	    Foo.find(:all, :limit => per_page, :offset => offset)
+	  end
+	  @page = @pager.page(params[:page])
+	  # respond_to here if you want it
   end
-  @page = @pager.page(params[:page])
 
   # In your view
   <% @page.items.each do |foo| %>
@@ -35,7 +40,6 @@ set of objects based on the offset and number of objects per page.
 === Anything else
 
   bunch_o_data = (1..60).to_a
-  PER_PAGE = 10
 	pager = Paginator.new(bunch_o_data.size, PER_PAGE) do |offset, per_page|
 	  bunch_o_data[offset,per_page]
 	end

@@ -14,6 +14,8 @@ set of objects based on the offset and number of objects per page.
 EOD
   p.url = "http://paginator.rubyforge.org"
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+  p.email = %q{bruce@codefluency.com}
+  p.author = ["Bruce Williams"]
 end
 
 # vim: syntax=Ruby

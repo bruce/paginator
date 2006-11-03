@@ -72,5 +72,21 @@ class PaginatorTest < Test::Unit::TestCase
   def test_number_of_pages
     assert_equal 5, @pager.number_of_pages
   end
+  
+  def test_passing_block_to_initializer_with_arity_of_two_yields_per_page
+    pager = Paginator.new(20,2) do |offset,per_page|
+      assert_equal 2, per_page
+    end
+    pager.page(1).items
+  end
+
+  def test_passing_block_to_initializer_with_arity_of_one_does_not_yield_per_page
+    pager = Paginator.new(20,2) do |offset|
+      assert_equal 0, offset
+    end
+    pager.page(1).items
+  end
+  
+  
 
 end

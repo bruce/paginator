@@ -1,3 +1,20 @@
+== 1.0.5 / 2006-10-27
+
+* Fix to Rakefile (addresses #6304)
+
+== 1.0.4 / 2006-10-27
+
+* Documentation fix
+
+== 1.0.3 / 2006-10-26
+
+* Documentation fix
+
+== 1.0.2 / 2006-10-25
+
+* If the block passed during Paginator has an arity of 1, the number
+  of items per page will not be yielded to the block.
+
 == 1.0.1 / 2006-10-24
 
 * Made Paginator#page more accepting, and set it to default to 1
