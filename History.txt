@@ -1,3 +1,7 @@
+== 1.0.6 / 2006-11-02
+
+* Added each_with_index to Paginator and Page classes
+
 == 1.0.5 / 2006-10-27
 
 * Fix to Rakefile (addresses #6304)
