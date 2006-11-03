@@ -69,6 +69,21 @@ class PaginatorTest < Test::Unit::TestCase
     end
   end
   
+  def test_each_with_index
+    page_offset = 0
+    @pager.each_with_index do |page, page_index|
+      assert page
+      assert_equal page_offset, page_index
+      item_offset = 0
+      page.each_with_index do |item, item_index|
+        assert item
+        assert_equal item_offset, item_index
+        item_offset += 1
+      end
+      page_offset += 1
+    end
+  end
+  
   def test_number_of_pages
     assert_equal 5, @pager.number_of_pages
   end

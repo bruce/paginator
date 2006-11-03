@@ -2,7 +2,7 @@ require 'forwardable'
 
 class Paginator
   
-  VERSION = '1.0.5'
+  VERSION = '1.0.6'
 
   class ArgumentError < ::ArgumentError; end
   class MissingCountError < ArgumentError; end
@@ -44,8 +44,15 @@ class Paginator
   
   # Iterate through pages
   def each
+    each_with_index do |item, index|
+      yield item
+    end
+  end
+  
+  # Iterate through pages with indices
+  def each_with_index
     1.upto(number_of_pages) do |number|
-      yield page(number)
+      yield(page(number), number - 1)
     end
   end
   
@@ -70,6 +77,7 @@ class Paginator
     def_delegator :@pager, :first, :first
     def_delegator :@pager, :last, :last
     def_delegator :items, :each
+    def_delegator :items, :each_with_index    
         
     attr_reader :number, :pager
     
