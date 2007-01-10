@@ -22,11 +22,11 @@ You could, of course, just pass in the number of items per page directly to the 
 === In a Rails Application
 
   def index
-	  @pager = ::Paginator.new(Foo.count, PER_PAGE) do |offset, per_page|
-	    Foo.find(:all, :limit => per_page, :offset => offset)
-	  end
-	  @page = @pager.page(params[:page])
-	  # respond_to here if you want it
+    @pager = ::Paginator.new(Foo.count, PER_PAGE) do |offset, per_page|
+      Foo.find(:all, :limit => per_page, :offset => offset)
+    end
+    @page = @pager.page(params[:page])
+    # respond_to here if you want it
   end
 
   # In your view
@@ -40,15 +40,15 @@ You could, of course, just pass in the number of items per page directly to the 
 === Anything else
 
   bunch_o_data = (1..60).to_a
-	pager = Paginator.new(bunch_o_data.size, PER_PAGE) do |offset, per_page|
-	  bunch_o_data[offset,per_page]
-	end
-	pager.each do |page|
-	  puts "Page ##{page.number}"
-	  page.each do |item|
-	    puts item
+  pager = Paginator.new(bunch_o_data.size, PER_PAGE) do |offset, per_page|
+    bunch_o_data[offset,per_page]
+  end
+  pager.each do |page|
+    puts "Page ##{page.number}"
+    page.each do |item|
+      puts item
     end
-	end
+  end
 
 == REQUIREMENTS:
 

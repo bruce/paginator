@@ -102,6 +102,24 @@ class PaginatorTest < Test::Unit::TestCase
     pager.page(1).items
   end
   
+  def test_page_object_knows_first_and_last_item_numbers
+    items = (1..11).to_a
+    pager = Paginator.new(items.size,3) do |offset, per_page|
+      items[offset, per_page]
+    end
+    page = pager.page(1)
+    assert_equal 1, page.first_item_number
+    assert_equal 3, page.last_item_number
+    page = pager.page(2)
+    assert_equal 4, page.first_item_number
+    assert_equal 6, page.last_item_number
+    page = pager.page(3)
+    assert_equal 7, page.first_item_number
+    assert_equal 9, page.last_item_number    
+    page = pager.page(4)
+    assert_equal 10, page.first_item_number
+    assert_equal 11, page.last_item_number    
+  end
   
 
 end

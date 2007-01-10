@@ -2,13 +2,13 @@ require 'forwardable'
 
 class Paginator
   
-  VERSION = '1.0.6'
+  VERSION = '1.0.8'
 
   class ArgumentError < ::ArgumentError; end
   class MissingCountError < ArgumentError; end
   class MissingSelectError < ArgumentError; end  
   
-  attr_reader :per_page  
+  attr_reader :per_page, :count 
   
   # Instantiate a new Paginator object
   #
@@ -83,6 +83,7 @@ class Paginator
     
     def initialize(pager, number, select) #:nodoc:
       @pager, @number = pager, number
+      @offset = (number - 1) * pager.per_page
       @select = select
     end
     
@@ -110,6 +111,19 @@ class Paginator
     # Get next page (if possible)
     def next
       @pager.page(@number + 1) if next?
+    end
+    
+    # 
+    def first_item_number
+      1 + @offset
+    end
+    
+    def last_item_number
+      if next?
+        @offset + @pager.per_page
+      else
+        @pager.count
+      end
     end
     
     def ==(other) #:nodoc:

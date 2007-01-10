@@ -1,3 +1,8 @@
+== 1.0.8 / 2006-11-02
+
+* Added <tt>Page#first_item_number</tt> and <tt>Page#last_item_number</tt>
+  * Thanks, Quannon Au!
+
 == 1.0.6 / 2006-11-02
 
 * Added each_with_index to Paginator and Page classes
