@@ -113,11 +113,12 @@ class Paginator
       @pager.page(@number + 1) if next?
     end
     
-    # 
+    # The "item number" of the first item on this page
     def first_item_number
       1 + @offset
     end
     
+    # The "item number" of the last item on this page
     def last_item_number
       if next?
         @offset + @pager.per_page
