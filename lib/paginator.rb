@@ -2,7 +2,7 @@ require 'forwardable'
 
 class Paginator
   
-  VERSION = '1.0.8'
+  VERSION = '1.0.9'
 
   class ArgumentError < ::ArgumentError; end
   class MissingCountError < ArgumentError; end
@@ -29,7 +29,7 @@ class Paginator
   
   # Total number of pages
   def number_of_pages
-    (@count / @per_page) + (@count % @per_page > 0 ? 1 : 0)
+     (@count / @per_page).to_i + (@count % @per_page > 0 ? 1 : 0)
   end
   
   # First page object

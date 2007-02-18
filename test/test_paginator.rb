@@ -123,3 +123,12 @@ class PaginatorTest < Test::Unit::TestCase
   
 
 end
+
+class PaginatorTestWithMathN < PaginatorTest
+  
+  def setup
+    require 'mathn'
+    super
+  end
+  
+end

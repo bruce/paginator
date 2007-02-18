@@ -1,3 +1,8 @@
+== 1.0.9 / 2007-02-17
+
+* Modified Pager#number_of_pages to support mathn's monkeypatching of Fixnum#/
+  * Thanks, Paul King!
+
 == 1.0.8 / 2006-11-02
 
 * Added <tt>Page#first_item_number</tt> and <tt>Page#last_item_number</tt>
