@@ -2,7 +2,9 @@ require 'forwardable'
 
 class Paginator
   
-  VERSION = '1.0.9'
+  VERSION = '1.1.0'
+  
+  include Enumerable
 
   class ArgumentError < ::ArgumentError; end
   class MissingCountError < ArgumentError; end
@@ -42,17 +44,9 @@ class Paginator
     page number_of_pages
   end
   
-  # Iterate through pages
   def each
-    each_with_index do |item, index|
-      yield item
-    end
-  end
-  
-  # Iterate through pages with indices
-  def each_with_index
     1.upto(number_of_pages) do |number|
-      yield(page(number), number - 1)
+      yield page(number)
     end
   end
   
@@ -73,11 +67,7 @@ class Paginator
   # of the page in the paginator
   class Page
     
-    extend Forwardable
-    def_delegator :@pager, :first, :first
-    def_delegator :@pager, :last, :last
-    def_delegator :items, :each
-    def_delegator :items, :each_with_index    
+    include Enumerable
         
     attr_reader :number, :pager
     
@@ -98,10 +88,10 @@ class Paginator
       @number > 1
     end
     
-    # Get previous page (if possible)
-    def prev
-      @pager.page(@number - 1) if prev?
-    end
+ #   # Get previous page (if possible)
+   def prev
+     @pager.page(@number - 1) if prev?
+   end
     
     # Checks to see if there's a page after this one
     def next?
@@ -109,9 +99,9 @@ class Paginator
     end
     
     # Get next page (if possible)
-    def next
-      @pager.page(@number + 1) if next?
-    end
+   def next
+     @pager.page(@number + 1) if next?
+   end
     
     # The "item number" of the first item on this page
     def first_item_number
@@ -129,6 +119,18 @@ class Paginator
     
     def ==(other) #:nodoc:
       @pager == other.pager && self.number == other.number
+    end
+    
+    def each(&block)
+      items.each(&block)
+    end
+    
+    def method_missing(meth, *args, &block) #:nodoc:
+      if @pager.respond_to?(meth)
+        @pager.__send__(meth, *args, &block)
+      else
+        super
+      end
     end
     
   end

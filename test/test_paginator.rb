@@ -60,12 +60,16 @@ class PaginatorTest < Test::Unit::TestCase
     assert !@pager.first.prev
   end
   
-  def test_each
+  def test_page_enumerable
     @pager.each do |page|
       assert page
       page.each do |item|
         assert item
       end
+      page.each_with_index do |item, index|
+        assert_equal page.items[index], item
+      end
+      assert_equal page.items, page.inject([]) {|list, item| list << item }
     end
   end
   
@@ -120,7 +124,6 @@ class PaginatorTest < Test::Unit::TestCase
     assert_equal 10, page.first_item_number
     assert_equal 11, page.last_item_number    
   end
-  
 
 end
 

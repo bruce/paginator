@@ -30,7 +30,7 @@ You could, of course, just pass in the number of items per page directly to the 
   end
 
   # In your view
-  <% @page.items.each do |foo| %>
+  <% @page.each do |foo| %>
     <%# Show something for each item %>
   <% end %>
   <%= @page.number %>
@@ -62,7 +62,7 @@ No special instructions.
 
 (The MIT License)
 
-Copyright (c) 2006 Bruce Williams (http://codefluency.com)
+Copyright (c) 2006-2007 Bruce Williams (http://codefluency.com)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
