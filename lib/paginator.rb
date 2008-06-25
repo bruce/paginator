@@ -83,6 +83,11 @@ class Paginator
       @items ||= @select.call
     end
     
+    # Does this page have any items?
+    def empty?
+      items.empty?
+    end
+    
     # Checks to see if there's a page before this one
     def prev?
       @number > 1
