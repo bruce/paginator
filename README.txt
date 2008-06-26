@@ -1,6 +1,8 @@
 paginator
     by Bruce Williams
     http://codefluency.com
+    
+Source at http://github.com/bruce/paginator
 
 == DESCRIPTION:
   
