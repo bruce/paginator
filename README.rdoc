@@ -30,8 +30,20 @@ You could, of course, just pass in the number of items per page directly to the 
     @page = @pager.page(params[:page])
     # respond_to here if you want it
   end
+  
+Note that if you're using named scopes, you need to call Scope#all; the proc shouldn't
+return an un-loaded scope:
 
-  # In your view
+  def index
+    @pager = ::Paginator.new(Foo.count, PER_PAGE) do |offset, per_page|
+      Foo.some_named_scope(:limit => per_page, :offset => offset).all
+    end
+    @page = @pager.page(params[:page])
+    # respond_to here if you want it
+  end
+
+In your view:
+
   <% @page.each do |foo| %>
     <%# Show something for each item %>
   <% end %>
