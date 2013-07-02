@@ -1,7 +1,0 @@
-History.txt
-Manifest.txt
-README.txt
-Rakefile
-bin/paginator
-lib/paginator.rb
-test/test_paginator.rb
