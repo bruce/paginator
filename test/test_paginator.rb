@@ -7,14 +7,14 @@ class PaginatorTest < Test::Unit::TestCase
 
   def setup
     @data = (0..43).to_a
-    @pager = Paginator.new(@data.size, PER_PAGE) do |offset, per_page|
+    @pager = Paginator.create(@data.size, PER_PAGE) do |offset, per_page|
       @data[offset, per_page]
     end
   end
 
   def test_initializing_paginator_raises_exception
     assert_raises(Paginator::MissingSelectError) do
-      @pager = Paginator.new(@data.size, PER_PAGE)
+      @pager = Paginator.create(@data.size, PER_PAGE)
     end
   end
 
@@ -93,14 +93,14 @@ class PaginatorTest < Test::Unit::TestCase
   end
 
   def test_passing_block_to_initializer_with_arity_of_two_yields_per_page
-    pager = Paginator.new(20, 2) do |offset,per_page|
+    pager = Paginator.create(20, 2) do |offset,per_page|
       assert_equal 2, per_page
     end
     pager.page(1).items
   end
 
   def test_passing_block_to_initializer_with_arity_of_one_does_not_yield_per_page
-    pager = Paginator.new(20, 2) do |offset|
+    pager = Paginator.create(20, 2) do |offset|
       assert_equal 0, offset
     end
     pager.page(1).items
@@ -108,7 +108,7 @@ class PaginatorTest < Test::Unit::TestCase
 
   def test_page_object_knows_first_and_last_item_numbers
     items = (1..11).to_a
-    pager = Paginator.new(items.size,3) do |offset, per_page|
+    pager = Paginator.create(items.size,3) do |offset, per_page|
       items[offset, per_page]
     end
     page = pager.page(1)
