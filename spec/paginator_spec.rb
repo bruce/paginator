@@ -1,38 +1,39 @@
-require 'test/unit'
+require 'minitest/autorun'
+require 'minitest/spec'
 require 'paginator'
 
-class PaginatorTest < Test::Unit::TestCase
+PER_PAGE = 10
 
-  PER_PAGE = 10
+describe Paginator do
 
-  def setup
+  before do
     @data = (0..43).to_a
     @pager = Paginator.create(@data.size, PER_PAGE) do |offset, per_page|
       @data[offset, per_page]
     end
   end
 
-  def test_initializing_paginator_raises_exception
+  it "needs a block" do
     assert_raises(Paginator::MissingSelectError) do
       @pager = Paginator.create(@data.size, PER_PAGE)
     end
   end
 
-  def test_can_get_last_page_from_pager_object
+  it "can get the last page" do
     assert_equal @pager.last, @pager.page(5)
   end
 
-  def test_can_get_first_page_from_page_object
+  it "can get the first page" do
     assert_equal @pager.first, @pager.page(1)
   end
 
-  def test_does_not_exceed_per_page
+  it "does not exceed per_page" do
     @pager.each do |page|
       assert page.items.size <= PER_PAGE
     end
   end
 
-  def test_only_last_page_has_less_items
+  it "only has less items on the last page" do
     @pager.each do |page|
       if page != @pager.last
         assert page.items.size <= PER_PAGE
@@ -42,25 +43,26 @@ class PaginatorTest < Test::Unit::TestCase
     end
   end
 
-  def test_returns_correct_first_page
+  it "returns the correct first page" do
     assert_equal @pager.page(1).number, @pager.first.number
   end
 
-  def test_returns_correct_last_page
+
+  it "returns the correct last page" do
     assert_equal @pager.page(5).number, @pager.last.number
   end
 
-  def test_last_page_has_no_next_page
+  it "has no next page when on the last page" do
     assert !@pager.last.next?
     assert !@pager.last.next
   end
 
-  def test_first_page_has_no_prev_page
+  it "has no previous page on the first page" do
     assert !@pager.first.prev?
     assert !@pager.first.prev
   end
 
-  def test_page_enumerable
+  it "is enumerable" do
     @pager.each do |page|
       assert page
       page.each do |item|
@@ -73,13 +75,13 @@ class PaginatorTest < Test::Unit::TestCase
     end
   end
 
-  def test_each_with_index
+  it "supports each.with_index" do
     page_offset = 0
-    @pager.each_with_index do |page, page_index|
+    @pager.each.with_index do |page, page_index|
       assert page
       assert_equal page_offset, page_index
       item_offset = 0
-      page.each_with_index do |item, item_index|
+      page.each.with_index do |item, item_index|
         assert item
         assert_equal item_offset, item_index
         item_offset += 1
@@ -88,25 +90,25 @@ class PaginatorTest < Test::Unit::TestCase
     end
   end
 
-  def test_number_of_pages
+  it "has the correct number of pages" do
     assert_equal 5, @pager.number_of_pages
   end
 
-  def test_passing_block_to_initializer_with_arity_of_two_yields_per_page
-    pager = Paginator.create(20, 2) do |offset,per_page|
+  it "yields per_page for a block with an arity of 2" do
+    pager = Paginator.create(20, 2) do |offset, per_page|
       assert_equal 2, per_page
     end
     pager.page(1).items
   end
 
-  def test_passing_block_to_initializer_with_arity_of_one_does_not_yield_per_page
+  it "does not yield per_page for a block of arity 1" do
     pager = Paginator.create(20, 2) do |offset|
       assert_equal 0, offset
     end
     pager.page(1).items
   end
 
-  def test_page_object_knows_first_and_last_item_numbers
+  it "has pages that know the first and last page numbers" do
     items = (1..11).to_a
     pager = Paginator.create(items.size,3) do |offset, per_page|
       items[offset, per_page]
@@ -123,15 +125,6 @@ class PaginatorTest < Test::Unit::TestCase
     page = pager.page(4)
     assert_equal 10, page.first_item_number
     assert_equal 11, page.last_item_number
-  end
-
-end
-
-class PaginatorTestWithMathN < PaginatorTest
-
-  def setup
-    require 'mathn'
-    super
   end
 
 end

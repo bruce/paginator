@@ -37,7 +37,8 @@ module Paginator
       page number_of_pages
     end
 
-    def each
+    def each(&block)
+      return enum_for(:each) unless block_given?
       1.upto(number_of_pages) do |number|
         yield page(number)
       end
